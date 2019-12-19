@@ -29,15 +29,24 @@ defmodule INA219.Device do
   will be used, for example the device above would be named `{"i2c-1", 0x41}`.
   """
 
+  @type device_name :: any
+
   @doc """
   Retrieve the current divisor from the process configuration.
   """
+  @spec current_divisor(pid | device_name) :: number | {:error, reason :: any}
+  def current_divisor(pid) when is_pid(pid), do: GenServer.call(pid, :current_divisor)
+
   def current_divisor(device_name),
     do: GenServer.call({:via, Registry, {INA219.Registry, device_name}}, :current_divisor)
 
   @doc """
   Set the current divisor in the process configuration.
   """
+  @spec current_divisor(pid | device_name, divisor :: number) :: :ok | {:error, reason :: any}
+  def current_divisor(pid, divisor) when is_pid(pid),
+    do: GenServer.call(pid, {:current_divisor, divisor})
+
   def current_divisor(device_name, divisor),
     do:
       GenServer.call(
@@ -48,12 +57,18 @@ defmodule INA219.Device do
   @doc """
   Retrieve the power divisor from the process configuration.
   """
+  @spec power_divisor(pid | device_name) :: number | {:error, reason :: any}
+  def power_divisor(pid) when is_pid(pid), do: GenServer.call(pid, :power_divisor)
+
   def power_divisor(device_name),
     do: GenServer.call({:via, Registry, {INA219.Registry, device_name}}, :power_divisor)
 
   @doc """
   Set the power divisor in the process configuration.
   """
+  @spec power_divisor(pid | device_name, divisor :: number) :: :ok | {:error, reason :: any}
+  def power_divisor(pid, divisor), do: GenServer.call(pid, {:power_divisor, divisor})
+
   def power_divisor(device_name, divisor),
     do:
       GenServer.call({:via, Registry, {INA219.Registry, device_name}}, {:power_divisor, divisor})
@@ -62,6 +77,9 @@ defmodule INA219.Device do
   Are new samples ready since the last time you read them?
   Calling this function will clear the value until next time new samples are ready.
   """
+  @spec conversion_ready?(pid | device_name) :: boolean
+  def conversion_ready?(pid) when is_pid(pid), do: GenServer.call(pid, :conversion_ready?)
+
   def conversion_ready?(device_name),
     do: GenServer.call({:via, Registry, {INA219.Registry, device_name}}, :conversion_ready?)
 
@@ -69,30 +87,45 @@ defmodule INA219.Device do
   Returns `true` when power or current calculations are out of range.
   This indicates that current and power data may be meaningless.
   """
+  @spec math_overflow?(pid | device_name) :: boolean
+  def math_overflow?(pid) when is_pid(pid), do: GenServer.call(pid, :math_overflow?)
+
   def math_overflow?(device_name),
     do: GenServer.call({:via, Registry, {INA219.Registry, device_name}}, :math_overflow?)
 
   @doc """
   Returns the bus voltage in mV.
   """
+  @spec bus_voltage(pid | device_name) :: number | {:error, reason :: any}
+  def bus_voltage(pid) when is_pid(pid), do: GenServer.call(pid, :bus_voltage)
+
   def bus_voltage(device_name),
     do: GenServer.call({:via, Registry, {INA219.Registry, device_name}}, :bus_voltage)
 
   @doc """
   Returns the shunt voltage in mV.
   """
+  @spec shunt_voltage(pid | device_name) :: number | {:error, reason :: any}
+  def shunt_voltage(pid) when is_pid(pid), do: GenServer.call(pid, :shunt_voltage)
+
   def shunt_voltage(device_name),
     do: GenServer.call({:via, Registry, {INA219.Registry, device_name}}, :shunt_voltage)
 
   @doc """
   Returns the current in mA.
   """
+  @spec current(pid | device_name) :: number | {:error, reason :: any}
+  def current(pid) when is_pid(pid), do: GenServer.call(pid, :current)
+
   def current(device_name),
     do: GenServer.call({:via, Registry, {INA219.Registry, device_name}}, :current)
 
   @doc """
   Returns the power in mW
   """
+  @spec power(pid | device_name) :: number | {:error, reason :: any}
+  def power(pid) when is_pid(pid), do: GenServer.call(pid, :power)
+
   def power(device_name),
     do: GenServer.call({:via, Registry, {INA219.Registry, device_name}}, :power)
 
@@ -100,6 +133,10 @@ defmodule INA219.Device do
   Executes the passed function with the `pid` of the I2C connection as it's argument.
   Use this if you want to manually run functions from `Commands` or `Registers`.
   """
+  @spec execute(pid | device_name, (pid -> any)) :: any
+  def execute(pid, fun) when is_pid(pid) and is_function(fun, 1),
+    do: GenServer.call(pid, {:execute, fun})
+
   def execute(device_name, fun) when is_function(fun, 1),
     do: GenServer.call({:via, Registry, {INA219.Registry, device_name}}, {:execute, fun})
 
