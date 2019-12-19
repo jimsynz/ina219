@@ -67,7 +67,8 @@ defmodule INA219.Device do
   Set the power divisor in the process configuration.
   """
   @spec power_divisor(pid | device_name, divisor :: number) :: :ok | {:error, reason :: any}
-  def power_divisor(pid, divisor), do: GenServer.call(pid, {:power_divisor, divisor})
+  def power_divisor(pid, divisor) when is_pid(pid),
+    do: GenServer.call(pid, {:power_divisor, divisor})
 
   def power_divisor(device_name, divisor),
     do:
