@@ -17,8 +17,7 @@ defmodule INA219.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
-      mod: {INA219.Application, []}
+      extra_applications: [:logger]
     ]
   end
 
@@ -35,8 +34,13 @@ defmodule INA219.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:elixir_ale, "~> 1.2"},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:ex_doc, ">= 0.0.0", only: [:dev, :test]},
+      {:earmark, ">= 0.0.0", only: [:dev, :test]},
+      {:mimic, "~> 1.1", only: :test},
+      {:credo, "~> 1.1", only: [:dev, :test], runtime: false},
+      {:wafer, git: "https://gitlab.com/jimsy/wafer"},
+      {:elixir_ale, "~> 1.2", optional: true},
+      {:circuits_i2c, "~> 0.3", optional: true}
     ]
   end
 end

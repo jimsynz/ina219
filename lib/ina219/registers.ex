@@ -1,61 +1,40 @@
 defmodule INA219.Registers do
-  alias ElixirALE.I2C
-  use Bitwise
-  require Logger
+  use Wafer.Registers
 
   @moduledoc """
-  Handle reading and writing directly from each device's registers.
+  The INA219 uses a bank of registers for holding configuration settings,
+  measurement results, maximum/minimum limits, and status information.
   """
 
   @doc """
-  Read the device's configuration register.
+  All-register reset, settings for bus voltage range, PGA Gain, ADC
+  resolution/averaging.
   """
-  def configuration(pid), do: read_register(pid, 0)
+  defregister(:configuration, 0, :rw, 2)
 
   @doc """
-  Write `bytes` to the device's configuration register.
+  Shunt voltage measurement data.
   """
-  def configuration(pid, bytes), do: write_register(pid, 0, bytes)
+  defregister(:shunt_voltage, 1, :ro, 2)
 
   @doc """
-  Read the shunt voltage register.
+  Bus voltage measurement data.
   """
-  def shunt_voltage(pid), do: read_register(pid, 1)
+  defregister(:bus_voltage, 2, :ro, 2)
 
   @doc """
-  Read the bus voltage register.
+  Power measurement data.
   """
-  def bus_voltage(pid), do: read_register(pid, 2)
+  defregister(:power, 3, :ro, 2)
 
   @doc """
-  Read the power register.
+  Contains the value of the current flowing through the shunt resistor.
   """
-  def power(pid), do: read_register(pid, 3)
+  defregister(:current, 4, :ro, 2)
 
   @doc """
-  Read the current register.
+  Sets full-scale range and LSB of current and power measurements. Overall
+  system calibration.
   """
-  def current(pid), do: read_register(pid, 4)
-
-  @doc """
-  Read the calibration register.
-  """
-  def calibration(pid), do: read_register(pid, 5)
-
-  @doc """
-  Write `bytes` to the device's calibration register.
-  """
-  def calibration(pid, bytes), do: write_register(pid, 5, bytes)
-
-  defp read_register(pid, register) do
-    with :ok <- I2C.write(pid, <<register>>),
-         <<value::integer-size(16)>> <- I2C.read(pid, 2),
-         do: value
-  end
-
-  defp write_register(pid, register, bytes) do
-    msb = bytes >>> 8
-    lsb = bytes &&& 0xFF
-    I2C.write(pid, <<register, msb, lsb>>)
-  end
+  defregister(:calibration, 5, :rw, 2)
 end
