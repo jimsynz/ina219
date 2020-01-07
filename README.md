@@ -12,52 +12,42 @@ different shunt resistor value.
 
 ## Usage
 
-In your `config.exs` add the following:
+This library uses the [Wafer](https://gitlab.com/jimsy/wafer) project to connect
+to the I2C device - this allows you to bring your own driver.
 
-```elixir
-config :ina219,
-  devices: [
-    %{
-      bus: "i2c-1",
-      address: 0x41,
-      commands: [:calibrate_32V_2A!],
-      current_divisor: 10,
-      power_divisor: 2
-    }
-  ]
-```
+Example using [Elixir Circuits](https://hex.pm/packages/circuits_i2c)
 
-You must set the `bus` and `address` values according to your system.
+    iex> {:ok, conn} = Wafer.Driver.CircuitsI2C.acquire(bus: "i2c-1", address: 0x41)
+    ...> {:ok, conn} = INA219.acquire(conn: conn, current_divisor: 10, power_divisor: 2)
+    ...> :ok = INA219.calibrate_32V_2A(conn)
+    ...> INA219.bus_voltage(conn)
+    {:ok, 12.0}
 
 ## Calibration
 
 Calibrating these wee chips is a bit of a pain in the donkey, but is easily
 achieved by following the equation in the data sheet.  Once you have the
 calibration and divisor values you wish to use you can configure the device
-manually (see the hexdocs for `INA219.Commands` for more information).  For
-example:
+manually.  For example:
 
-```elixir
-%{
-  bus: "i2c-1",
-  address: 0x41,
-  commands: [
-    calibrate: 8192,
-    bus_voltage_range: 32,
-    shunt_voltage_pga: 8,
-    bus_adc_resolution_and_averaging: {1, 12},
-    shunt_adc_resolution_and_averaging: {1, 12},
-    mode: :shunt_and_bus_voltage_continuous
-  ],
-  current_divisor: 10,
-  power_divisor: 2
-}
-```
+    iex> {:ok, conn} = Wafer.Driver.CircuitsI2C.acquire(bus: "i2c-1", address: 0x41)
+    ...> {:ok, conn} = INA219.acquire(conn: conn, current_divisor: 10, power_divisor: 2)
+    ...> INA219.calibrate(conn, 4096)
+    ...> INA219.bus_voltage_range(conn, 32)
+    ...> INA219.shunt_voltage_pga(conn, 8)
+    ...> INA219.bus_adc_resolution_and_averaging(conn, {1, 12})
+    ...> INA219.shunt_adc_resolution_and_averaging(conn, {1, 12})
+    ...> INA219.mode(conn, :shunt_and_bus_voltage_continuous)
+
+The `current_divisor` and `power_divisor` values are stored in the connection
+struct because there's no way to store them in the device's registers.  You can
+alter them as required.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ina219` to your list of dependencies in `mix.exs`:
+The `ina219` package is [available on hex](https://hex.pm/packages/ina219) so it
+can be installed by adding `ina219` to your list of dependencies in `mix.exs`.
+You'll also need to install an appropriate connection driver.
 
 ```elixir
 def deps do
@@ -67,7 +57,8 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ina219](https://hexdocs.pm/ina219).
+
+Documentation for the latest release is always available on
+[HexDocs](https://hexdocs.pm/ina219/) and for the master branch
+[here](https://jimsy.gitlab.io/ina219).
 
