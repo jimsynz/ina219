@@ -408,13 +408,13 @@ defmodule INA219 do
   Set the current operating mode for the device.
 
   Valid values are:
-      :power_down
-      :shunt_voltage_triggered
-      :bus_voltage_triggered
-      :adc_off
-      :shunt_voltage_continuous
-      :bus_voltage_continuous
-      :shunt_and_bus_voltage_continuous
+  - `:power_down`
+  - `:shunt_voltage_triggered`
+  - `:bus_voltage_triggered`
+  - `:adc_off`
+  - `:shunt_voltage_continuous`
+  - `:bus_voltage_continuous`
+  - `:shunt_and_bus_voltage_continuous`
   """
   @spec mode(t, operating_mode) :: :ok | {:error, reason :: any}
   def mode(conn, :power_down), do: set_mode(conn, 0)
@@ -436,6 +436,7 @@ defmodule INA219 do
   Are new samples ready since the last time you read them?
   Calling this function will clear the value until next time new samples are ready.
   """
+  @spec conversion_ready?(t) :: boolean
   def conversion_ready?(conn) do
     case read_bus_voltage(conn) do
       {:ok, <<_::size(14), 1::size(1), _::size(1)>>} -> true
@@ -447,6 +448,7 @@ defmodule INA219 do
   Returns `true` when power or current calculations are out of range.
   This indicates that current and power data may be meaningless.
   """
+  @spec math_overflow?(t) :: boolean
   def math_overflow?(conn) do
     case read_bus_voltage(conn) do
       {:ok, <<_::size(15), 1::size(1)>>} -> true
