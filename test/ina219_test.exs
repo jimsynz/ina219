@@ -19,20 +19,6 @@ defmodule INA219Test do
     end
   end
 
-  describe "release/1" do
-    test "calls `release/1` on the upstream driver" do
-      conn = conn()
-
-      Fake
-      |> expect(:release, 1, fn driver ->
-        assert driver == conn.conn
-        :ok
-      end)
-
-      assert :ok = INA219.release(conn)
-    end
-  end
-
   describe "reset/1" do
     test "sets the MSB to 1" do
       INA219.Registers

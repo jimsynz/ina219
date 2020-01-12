@@ -1,5 +1,5 @@
 defmodule INA219 do
-  @derive [Wafer.Chip, Wafer.DeviceID]
+  @derive [Wafer.Chip, Wafer.DeviceID, Wafer.Release]
   defstruct ~w[conn current_divisor power_divisor]a
   @behaviour Wafer.Conn
   alias Wafer.Conn
@@ -53,14 +53,6 @@ defmodule INA219 do
         {:error, reason}
     end
   end
-
-  @doc """
-  Release the connection to the device.
-  """
-  @spec release(t) :: :ok
-  @impl Wafer.Conn
-  def release(%INA219{conn: %{__struct__: mod} = inner} = _conn),
-    do: apply(mod, :release, [inner])
 
   @doc """
   Power-on-reset the device,
