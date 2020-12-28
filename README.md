@@ -52,7 +52,7 @@ You'll also need to install an appropriate connection driver.
 ```elixir
 def deps do
   [
-    {:ina219, "~> 0.1.0"}
+    {:ina219, "~> 1.0.0"}
   ]
 end
 ```
