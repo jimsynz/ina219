@@ -36,7 +36,7 @@ defmodule INA219.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:circuits_i2c, "~> 0.3", optional: true},
+      {:circuits_i2c, "~> 1.0", optional: true},
       {:credo, "~> 1.1", only: ~w[dev test]a, runtime: false},
       {:earmark, ">= 0.0.0", only: ~w[dev test]a},
       {:elixir_ale, "~> 1.2", optional: true},
