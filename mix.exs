@@ -37,7 +37,7 @@ defmodule INA219.MixProject do
   defp deps do
     [
       {:circuits_i2c, "~> 1.0", optional: true},
-      {:credo, "~> 1.1", only: ~w[dev test]a, runtime: false},
+      {:credo, "~> 1.6", only: ~w[dev test]a, runtime: false},
       {:earmark, ">= 0.0.0", only: ~w[dev test]a},
       {:elixir_ale, "~> 1.2", optional: true},
       {:ex_doc, ">= 0.0.0", only: ~w[dev test]a},
