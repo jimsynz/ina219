@@ -40,7 +40,7 @@ defmodule INA219.MixProject do
       {:credo, "~> 1.6", only: ~w[dev test]a, runtime: false},
       {:earmark, ">= 0.2.1", only: ~w[dev test]a},
       {:elixir_ale, "~> 1.2", optional: true},
-      {:ex_doc, ">= 0.0.0", only: ~w[dev test]a},
+      {:ex_doc, ">= 0.26.0", only: ~w[dev test]a},
       {:git_ops, "~> 2.3", only: ~w[dev test]a, runtime: false},
       {:mimic, "~> 1.1", only: :test},
       {:wafer, "~> 0.3"}
