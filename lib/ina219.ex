@@ -80,9 +80,7 @@ defmodule INA219 do
          :ok <- shunt_voltage_pga(conn, 8),
          :ok <- bus_adc_resolution_and_averaging(conn, {1, 12}),
          :ok <- shunt_adc_resolution_and_averaging(conn, {1, 12}),
-         :ok <- mode(conn, :shunt_and_bus_voltage_continuous) do
-      :ok
-    end
+         do: mode(conn, :shunt_and_bus_voltage_continuous)
   end
 
   @doc """
@@ -101,9 +99,7 @@ defmodule INA219 do
          :ok <- shunt_voltage_pga(conn, 8),
          :ok <- bus_adc_resolution_and_averaging(conn, {1, 12}),
          :ok <- shunt_adc_resolution_and_averaging(conn, {1, 12}),
-         :ok <- mode(conn, :shunt_and_bus_voltage_continuous) do
-      :ok
-    end
+         do: mode(conn, :shunt_and_bus_voltage_continuous)
   end
 
   @doc """
@@ -122,9 +118,7 @@ defmodule INA219 do
          :ok <- shunt_voltage_pga(conn, 1),
          :ok <- bus_adc_resolution_and_averaging(conn, {1, 12}),
          :ok <- shunt_adc_resolution_and_averaging(conn, {1, 12}),
-         :ok <- mode(conn, :shunt_and_bus_voltage_continuous) do
-      :ok
-    end
+         do: mode(conn, :shunt_and_bus_voltage_continuous)
   end
 
   @doc """
