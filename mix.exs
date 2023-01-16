@@ -43,7 +43,7 @@ defmodule INA219.MixProject do
       {:ex_doc, "~> 0.29", only: ~w[dev test]a},
       {:git_ops, "~> 2.4", only: ~w[dev test]a, runtime: false},
       {:mimic, "~> 1.5", only: :test},
-      {:wafer, "~> 0.3"}
+      {:wafer, "~> 1.0"}
     ]
   end
 end
