@@ -493,13 +493,13 @@ defmodule INA219 do
   """
   @spec current(t) :: {:ok, milliamps} | {:error, reason :: any}
   def current(%{current_divisor: divisor} = conn) when is_float(divisor) do
-    with {:ok, <<data::size(16)>>} <- read_current(conn) do
+    with {:ok, <<data::signed-size(16)>>} <- read_current(conn) do
       {:ok, data / divisor}
     end
   end
 
   def current(%{current_divisor: divisor} = conn) when is_integer(divisor) do
-    with {:ok, <<data::size(16)>>} <- read_current(conn) do
+    with {:ok, <<data::signed-size(16)>>} <- read_current(conn) do
       {:ok, data / (divisor * 1.0)}
     end
   end
