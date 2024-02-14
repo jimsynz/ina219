@@ -57,7 +57,7 @@ defmodule INA219 do
   @doc """
   Power-on-reset the device,
   """
-  @spec reset(t) :: :ok | {:error, reason :: any}
+  @spec reset(t) :: {:ok, t} | {:error, reason :: any}
   def reset(conn) do
     update_configuration(conn, fn <<_::size(1), conf::size(15)>> ->
       <<1::size(1), conf::size(15)>>
@@ -72,14 +72,14 @@ defmodule INA219 do
   Make sure that you configure your device with a `current_divisor` of `10` and a
   `power_divisor` of `2`.
   """
-  @spec calibrate_32V_2A(t) :: :ok | {:error, reason :: any}
+  @spec calibrate_32V_2A(t) :: {:ok, t} | {:error, reason :: any}
   # credo:disable-for-next-line
   def calibrate_32V_2A(conn) do
-    with :ok <- calibrate(conn, 4096),
-         :ok <- bus_voltage_range(conn, 32),
-         :ok <- shunt_voltage_pga(conn, 8),
-         :ok <- bus_adc_resolution_and_averaging(conn, {1, 12}),
-         :ok <- shunt_adc_resolution_and_averaging(conn, {1, 12}),
+    with {:ok, conn} <- calibrate(conn, 4096),
+         {:ok, conn} <- bus_voltage_range(conn, 32),
+         {:ok, conn} <- shunt_voltage_pga(conn, 8),
+         {:ok, conn} <- bus_adc_resolution_and_averaging(conn, {1, 12}),
+         {:ok, conn} <- shunt_adc_resolution_and_averaging(conn, {1, 12}),
          do: mode(conn, :shunt_and_bus_voltage_continuous)
   end
 
@@ -91,14 +91,14 @@ defmodule INA219 do
   Make sure that you configure your device with a `current_divisor` of `25` and a
   `power_divisor` of `1`.
   """
-  @spec calibrate_32V_1A(t) :: :ok | {:error, reason :: any}
+  @spec calibrate_32V_1A(t) :: {:ok, t} | {:error, reason :: any}
   # credo:disable-for-next-line
   def calibrate_32V_1A(conn) do
-    with :ok <- calibrate(conn, 10_240),
-         :ok <- bus_voltage_range(conn, 32),
-         :ok <- shunt_voltage_pga(conn, 8),
-         :ok <- bus_adc_resolution_and_averaging(conn, {1, 12}),
-         :ok <- shunt_adc_resolution_and_averaging(conn, {1, 12}),
+    with {:ok, conn} <- calibrate(conn, 10_240),
+         {:ok, conn} <- bus_voltage_range(conn, 32),
+         {:ok, conn} <- shunt_voltage_pga(conn, 8),
+         {:ok, conn} <- bus_adc_resolution_and_averaging(conn, {1, 12}),
+         {:ok, conn} <- shunt_adc_resolution_and_averaging(conn, {1, 12}),
          do: mode(conn, :shunt_and_bus_voltage_continuous)
   end
 
@@ -110,14 +110,14 @@ defmodule INA219 do
   Make sure that you configure your device with a `current_divisor` of `20` and a
   `power_divisor` of `1`.
   """
-  @spec calibrate_16V_400mA(t) :: :ok | {:error, reason :: any}
+  @spec calibrate_16V_400mA(t) :: {:ok, t} | {:error, reason :: any}
   # credo:disable-for-next-line
   def calibrate_16V_400mA(conn) do
-    with :ok <- calibrate(conn, 8192),
-         :ok <- bus_voltage_range(conn, 16),
-         :ok <- shunt_voltage_pga(conn, 1),
-         :ok <- bus_adc_resolution_and_averaging(conn, {1, 12}),
-         :ok <- shunt_adc_resolution_and_averaging(conn, {1, 12}),
+    with {:ok, conn} <- calibrate(conn, 8192),
+         {:ok, conn} <- bus_voltage_range(conn, 16),
+         {:ok, conn} <- shunt_voltage_pga(conn, 1),
+         {:ok, conn} <- bus_adc_resolution_and_averaging(conn, {1, 12}),
+         {:ok, conn} <- shunt_adc_resolution_and_averaging(conn, {1, 12}),
          do: mode(conn, :shunt_and_bus_voltage_continuous)
   end
 
@@ -135,7 +135,7 @@ defmodule INA219 do
   @doc """
   Set the configured bus voltage range to either 16 or 32V.
   """
-  @spec bus_voltage_range(t, 16 | 32) :: :ok | {:error, reason :: any}
+  @spec bus_voltage_range(t, 16 | 32) :: {:ok, t} | {:error, reason :: any}
   def bus_voltage_range(conn, 16) do
     update_configuration(conn, fn <<head::size(2), _::size(1), tail::size(13)>> ->
       <<head::size(2), 0::size(1), tail::size(13)>>
@@ -175,7 +175,7 @@ defmodule INA219 do
     - `4` - gain +4, range +160mV.
     - `8` - gain +8, range +320mV.
   """
-  @spec shunt_voltage_pga(t, shunt_voltage_pga) :: :ok | {:error, reason :: any}
+  @spec shunt_voltage_pga(t, shunt_voltage_pga) :: {:ok, t} | {:error, reason :: any}
   def shunt_voltage_pga(conn, 1), do: set_shunt_voltage_pga(conn, 0)
   def shunt_voltage_pga(conn, 2), do: set_shunt_voltage_pga(conn, 1)
   def shunt_voltage_pga(conn, 4), do: set_shunt_voltage_pga(conn, 2)
@@ -241,7 +241,7 @@ defmodule INA219 do
   @spec bus_adc_resolution_and_averaging(
           t,
           {sample_averaging, sample_resolution}
-        ) :: :ok | {:error, reason :: any}
+        ) :: {:ok, t} | {:error, reason :: any}
   def bus_adc_resolution_and_averaging(conn, {1, 9}),
     do: set_bus_adc_resolution_and_averaging(conn, 0)
 
@@ -332,6 +332,7 @@ defmodule INA219 do
   * `{ 64, 12}` - 64 sample averaging and 12 bit ADC resolution.
   * `{128, 12}` - 128 sample averaging and 12 bit ADB resolution.
   """
+  @spec shunt_adc_resolution_and_averaging(t, {number, number}) :: {:ok, t} | {:error, any}
   def shunt_adc_resolution_and_averaging(conn, {1, 9}),
     do: set_shunt_adc_resolution_and_averaging(conn, 0)
 
@@ -402,7 +403,7 @@ defmodule INA219 do
   - `:bus_voltage_continuous`
   - `:shunt_and_bus_voltage_continuous`
   """
-  @spec mode(t, operating_mode) :: :ok | {:error, reason :: any}
+  @spec mode(t, operating_mode) :: {:ok, t} | {:error, reason :: any}
   def mode(conn, :power_down), do: set_mode(conn, 0)
   def mode(conn, :shunt_voltage_triggered), do: set_mode(conn, 1)
   def mode(conn, :bus_voltage_triggered), do: set_mode(conn, 2)
@@ -533,7 +534,7 @@ defmodule INA219 do
   @doc """
   Set the calibration value.
   """
-  @spec calibrate(t, non_neg_integer) :: :ok | {:error, reason :: any}
+  @spec calibrate(t, non_neg_integer) :: {:ok, t} | {:error, reason :: any}
   def calibrate(conn, data) when is_integer(data) and data >= 0 and data <= 0xFFFF do
     write_calibration(conn, <<data::size(16)>>)
   end
