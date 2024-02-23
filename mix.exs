@@ -28,7 +28,10 @@ defmodule INA219.MixProject do
       maintainers: ["James Harton <james@harton.nz>"],
       licenses: ["HL3-FULL"],
       links: %{
-        "Source" => "https://harton.dev/james/ina219"
+        "Source" => "https://harton.dev/james/ina219",
+        "GitHub" => "https://github.com/jimsynz/ina219",
+        "Changelog" => "https://docs.harton.nz/james/ina219/changelog.html",
+        "Sponsor" => "https://github.com/sponsors/jimsynz"
       }
     ]
   end
@@ -42,6 +45,7 @@ defmodule INA219.MixProject do
       {:doctor, "~> 0.21", only: ~w[dev test]a, runtime: false},
       {:earmark, "~> 1.4", only: ~w[dev test]a, runtime: false},
       {:elixir_ale, "~> 1.2", optional: true},
+      {:ex_check, "~> 0.15", only: ~w[dev test]a, runtime: false},
       {:ex_doc, "~> 0.30", only: ~w[dev test]a, runtime: false},
       {:git_ops, "~> 2.4", only: ~w[dev test]a, runtime: false},
       {:mimic, "~> 1.5", only: :test},

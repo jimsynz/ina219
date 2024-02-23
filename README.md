@@ -62,8 +62,8 @@ end
 ```
 
 Documentation for the latest release is always available on
-[HexDocs](https://hexdocs.pm/ina219/) and for the master branch
-[here](https://jimsy.gitlab.io/ina219).
+[HexDocs](https://hexdocs.pm/ina219/) and for the `main` branch
+on [docs.harton.nz](https://docs.harton.nz/james/ina219).
 
 ## Github Mirror
 
