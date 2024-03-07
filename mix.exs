@@ -12,7 +12,11 @@ defmodule INA219.MixProject do
       description:
         "Provides a driver for INA219-based voltage and current sensors connected via I2C",
       deps: deps(),
-      package: package()
+      package: package(),
+      docs: [
+        main: "readme",
+        extras: ["README.md", "CHANGELOG.md"]
+      ]
     ]
   end
 
