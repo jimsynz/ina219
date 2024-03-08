@@ -68,7 +68,7 @@ on [docs.harton.nz](https://docs.harton.nz/james/ina219).
 ## Github Mirror
 
 This repository is mirrored [on Github](https://github.com/jimsynz/ina219)
-from it's primary location [on my Forejo instance](https://harton.dev/james/ina219).
+from it's primary location [on my Forgejo instance](https://harton.dev/james/ina219).
 Feel free to raise issues and open PRs on Github.
 
 ## License
