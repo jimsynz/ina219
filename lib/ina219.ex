@@ -48,9 +48,6 @@ defmodule INA219 do
       :error ->
         {:error,
          "`INA219.acquire/1` requires the `conn`, `current_divisor` and `power_divisor` options."}
-
-      {:error, reason} ->
-        {:error, reason}
     end
   end
 
