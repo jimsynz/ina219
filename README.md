@@ -1,6 +1,5 @@
 # INA219
 
-[![Build Status](https://drone.harton.dev/api/badges/james/ina219/status.svg)](https://drone.harton.dev/james/ina219)
 [![Hex.pm](https://img.shields.io/hexpm/v/ina219.svg)](https://hex.pm/packages/ina219)
 [![Hippocratic License HL3-FULL](https://img.shields.io/static/v1?label=Hippocratic%20License&message=HL3-FULL&labelColor=5e2751&color=bc8c3d)](https://firstdonoharm.dev/version/3/0/full.html)
 
@@ -61,9 +60,8 @@ def deps do
 end
 ```
 
-Documentation for the latest release is always available on
-[HexDocs](https://hexdocs.pm/ina219/) and for the `main` branch
-on [docs.harton.nz](https://docs.harton.nz/james/ina219).
+Documentation for the latest release is available on
+[HexDocs](https://hexdocs.pm/ina219/).
 
 ## Github Mirror
 
