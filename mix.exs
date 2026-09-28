@@ -48,7 +48,7 @@ defmodule INA219.MixProject do
       {:dialyxir, "~> 1.4", only: ~w[dev test]a, runtime: false},
       {:doctor, "~> 0.23", only: ~w[dev test]a, runtime: false},
       {:elixir_ale, "~> 1.2", optional: true},
-      {:ex_check, "~> 0.16", only: ~w[dev test]a, runtime: false},
+      {:ex_check, "~> 0.17", only: ~w[dev test]a, runtime: false},
       {:ex_doc, "~> 0.40", only: ~w[dev test]a, runtime: false},
       {:git_ops, "~> 2.4", only: ~w[dev test]a, runtime: false},
       {:mimic, "~> 2.0", only: :test},
